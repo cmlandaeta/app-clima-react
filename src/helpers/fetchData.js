@@ -1,34 +1,16 @@
-import { useEffect, useState } from "react";
-
-export const fetchData = (url, endpoint) => {
-  const [state, setState] = useState({
-    data: null,
-    isLoading: false,
-    errors: null,
-  });
-
-  const { data, isLoading, errors } = state;
-
-  const getFetch = async () => {
-    if (!url) return;
-
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-
-      setState({ data, isLoading: false, errors: null });
-    } catch (error) {
-      setState({ data: null, isLoading: false, errors: error });
+export const fetchData = async (url) => {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
-  };
+    const data = await response.json();
+    return { data, isLoading: false, errors: null };
+  } catch (error) {
+    return { data: null, isLoading: false, errors: error.message };
+  }
+};
 
-  useEffect(() => {
-    getFetch();
-  }, [url, endpoint]);
-
-  return {
-    data,
-    isLoading,
-    errors,
-  };
+export const kelvinCent = (grados) => {
+  return parseInt(grados - 273.15);
 };

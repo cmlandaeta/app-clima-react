@@ -1,21 +1,22 @@
-import { useEffect, useState } from "react";
-
+import { useState, useEffect } from "react";
 import { fetchData } from "../helpers/fetchData";
 
-export const useFetch = (url, endpoint) => {
-  const [data, setData] = useState([]);
-  const [isLoading, setIsloading] = useState(true);
+export const useFetch = (url) => {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [errors, setErrors] = useState(null);
 
-  const getData = async () => {
-    const { data, isLoading, errors } = await fetchData(url, endpoint);
-
-    setData(data);
-    setIsloading(isLoading);
-    setErrors(errors);
-  };
-
   useEffect(() => {
+    if (!url) return;
+
+    const getData = async () => {
+      setIsLoading(true);
+      const result = await fetchData(url);
+      setData(result.data);
+      setIsLoading(result.isLoading);
+      setErrors(result.errors);
+    };
+
     getData();
   }, [url]);
 
