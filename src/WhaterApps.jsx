@@ -9,7 +9,7 @@ const WhaterApps = () => {
   const [iLoading, setIsLoading] = useState(true);
   const [error, setErrors] = useState(null);
 
-  const key = import.meta.env.VITE_URL || "77379afe9ebe314eb906c756ac777ab3";
+  const key = import.meta.env.VITE_KEY;
 
   const { data, isLoading, errors } = useFetch(
     ciudad
